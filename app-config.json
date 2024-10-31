@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "Gia Bình Số",
+    "textColor": "white",
+    "textAlign": "left",
+    "statusBarColor": "#ffffff",
+    "statusBar": "transparent",
+    "actionBarHidden": true,
+    "selfControlLoading": false,
+    "hideAndroidBottomNavigationBar": false,
+    "hideIOSSafeAreaBottom": false
+  },
+  "debug": false,
+  "pages": ["/user", "/form", "/dynamic-route", "/about", "/404"],
+  "listCSS": [],
+  "listSyncJS": [],
+  "listAsyncJS": [],
+  "template": {
+    "primaryColor": "#FF2147",
+    "prefixCurrencySymbol": false,
+    "currencySymbol": "đ"
+  }
+}

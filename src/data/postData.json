@@ -1,0 +1,20 @@
+[
+  {
+    "userId": 1,
+    "id": 1,
+    "title": "Tiêu đề 1",
+    "body": "Nội dung của bài viết 1"
+  },
+  {
+    "userId": 1,
+    "id": 2,
+    "title": "Tiêu đề 2",
+    "body": "Nội dung của bài viết 2"
+  },
+  {
+    "userId": 2,
+    "id": 3,
+    "title": "Tiêu đề 3",
+    "body": "Nội dung của bài viết 3"
+  }
+]
