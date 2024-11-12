@@ -177,7 +177,7 @@ const TaoCuocHenPageContent: FC = () => {
         };
 
         fetch(
-          "http://localhost/restful_api_sample/Apis/Booking/create.php",
+          "https://localhost:44337/api/Nukeviet/InsertLichHen",
           requestOptions
         )
           .then((response) => response.text())

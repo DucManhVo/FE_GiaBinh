@@ -3,7 +3,7 @@ import { getConfig } from "utils/config";
 import { FC } from "react";
 import { Space, Image, DotLoading } from "antd-mobile";
 import axios from "axios";
-import { formatDate } from "utils/short-function";
+import { getDate, getTime } from "utils/short-function";
 import icHistory from "../../static/history.png";
 
 //Dùng API thì xoá dòng này
@@ -46,12 +46,12 @@ const DatLichPageContent = () => {
   useEffect(() => {
     //Fetching data from a fake API
     axios
-      .get("http://localhost/restful_api_sample/Apis/Booking/read.php")
+      .get("https://localhost:44337/api/Nukeviet/GetLichHen")
       .then((response) => {
         // Assuming the API returns an array of objects with title, body (as description), and userId (as name)
         const data = response.data.data.map((item) => ({
-          date: formatDate(item.date),
-          time: item.time,
+          date: getDate(item.date),
+          time: getTime(item.date),
           name: item.name,
           address: item.address,
           description: item.description,

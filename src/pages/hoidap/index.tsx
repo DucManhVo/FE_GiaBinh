@@ -66,7 +66,7 @@ const HoiDapPageContent = () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://vms-ai.thanhhoa.gov.vn/HoiDapTrucTuyenServices.asmx/DanhSachCauHoi?pageRows=${pageRows}&pageIndex=${pageIndex}`,
+          `https://hoidap.tayninh.gov.vn/HoiDapTrucTuyenServices.asmx/DanhSachCauHoi?pageRows=${pageRows}&pageIndex=${pageIndex}`,
           requestOptions
         );
         const result = await response.json();

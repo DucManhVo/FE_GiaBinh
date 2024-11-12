@@ -85,7 +85,7 @@ export const mainCategories = selector<any[]>({
       name: "Tra cứu hồ sơ",
       icon: icSearch,
       url: "",
-      page: "",
+      page: "/tracuuhoso",
     },
     {
       id: "truyenhinh",

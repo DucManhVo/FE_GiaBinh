@@ -40,6 +40,16 @@ export const replaceFile = (str: string) => {
   return str.replace(/^~/, "");
 };
 
+export function getTime(dateTimeString) {
+  const date = new Date(dateTimeString);
+  return date.toTimeString().split(" ")[0]; // Returns time in "HH:MM:SS" format
+}
+
+export function getDate(dateTimeString) {
+  const date = new Date(dateTimeString);
+  return date.toISOString().split("T")[0]; // Returns date in "YYYY-MM-DD" format
+}
+
 export const postLichSu = async (
   method,
   url,
