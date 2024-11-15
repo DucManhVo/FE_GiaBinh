@@ -56,13 +56,13 @@ const HoiDapPageContent = () => {
   const myHeaders = new Headers();
   myHeaders.append("Cookie", "ASP.NET_SessionId=iqgffpembxqx3pu4fjgagdjk");
 
-  const requestOptions: any = {
+  const requestOptions: RequestInit = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
   };
   const fetchPosts = useCallback(
-    async (pageIndex) => {
+    async (pageIndex: number) => {
       setIsLoading(true);
       try {
         const response = await fetch(
@@ -214,7 +214,7 @@ const HoiDapPageContent = () => {
               Đặt câu hỏi
             </span>
           </div>
-          <div className="product-bottom-panel__button-action">
+          {/* <div className="product-bottom-panel__button-action">
             <span
               onClick={() => {
                 navigate(`/hoidap/lichsuhoidap`);
@@ -224,7 +224,7 @@ const HoiDapPageContent = () => {
               <Icon style={{ fontWeight: 550 }} size={17} icon="zi-memory" />
               Lịch sử
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </Box>

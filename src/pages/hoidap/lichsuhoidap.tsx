@@ -95,7 +95,7 @@ const LichSuPageContent = () => {
     try {
       const response = await postLichSu(
         "POST",
-        "https://vms-ai.thanhhoa.gov.vn/HoiDapTrucTuyenServices.asmx/DanhSachCauHoiByDienThoai",
+        "https://hoidap.tayninh.gov.vn/HoiDapTrucTuyenServices.asmx/DanhSachCauHoiByDienThoai",
         dienThoai,
         pageRows,
         pageIndex
@@ -120,7 +120,7 @@ const LichSuPageContent = () => {
           method: "POST",
           redirect: "follow" as RequestRedirect,
         };
-        const url = `https://ttbc.thanhhoa.gov.vn/api/CongDan/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
+        const url = `https://hoidap.tayninh.gov.vn/api/CongDan/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
         const response = await fetch(url, requestOptions);
         const result = await response.json();
         if (result.success) {
@@ -203,7 +203,7 @@ const LichSuPageContent = () => {
           {cauHoi?.map((item, index) => (
             <ListRenderer
               onClick={() => {
-                navigate(`/tuongtacbaochi/chitietlichsucauhoi/?id=${item.Id}`);
+                navigate(`/hoidap/chitiethoidap/?id=${item.Id}`);
               }}
               items={[
                 {

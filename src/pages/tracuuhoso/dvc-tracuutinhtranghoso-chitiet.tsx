@@ -9,6 +9,7 @@ import {
   UnorderedListOutline,
   ScanCodeOutline,
 } from "antd-mobile-icons";
+import { getRouteParams } from "zmp-sdk";
 
 import { Box, Button, Header, Icon, Page, Text, useNavigate } from "zmp-ui";
 const mainColor = getConfig((c) => c.template.primaryColor);
@@ -18,22 +19,14 @@ var requestOptions: any = {
 };
 
 const TraCuuHoSoChiTietPageContent = () => {
-  // const user = useStore("user");
-  //   const hoSoData = zmproute.query.hoSoInfo
-  //     ? JSON.parse(zmproute.query.hoSoInfo)
-  //     : null;
-  //   const soBienNhan = zmproute.query.soBienNhan;
-
   const [dataHoSo, setHoSoData] = useState<any>(null);
   const toastHandler = useRef<any>();
+  const { SoBienNhan } = getRouteParams();
 
-  //   useEffect(() => {
-  //     if (hoSoData) {
-  //       setHoSoData(hoSoData);
-  //     } else if (soBienNhan) {
-  //       _traCuuThuTuc(soBienNhan);
-  //     }
-  //   }, []);
+  useEffect(() => {
+    console.log(SoBienNhan);
+    _traCuuThuTuc(SoBienNhan);
+  }, []);
 
   const _traCuuThuTuc = async (soBienNhan) => {
     toastHandler.current = Toast.show({
@@ -58,18 +51,13 @@ const TraCuuHoSoChiTietPageContent = () => {
     <Page name="dvc-tracuutinhtranghoso-chitiet">
       {dataHoSo && (
         <ResultPage
-          icon={<Icon icon="zi-list-2" style={{ color: "#fff" }} />}
+          icon={<ScanCodeOutline />}
           title={dataHoSo.soBienNhan}
           style={{
-            "--background-color": "#1843EF",
+            "--background-color": mainColor,
           }}
         >
-          <List
-            header=""
-            style={{
-              "--header-font-size": "14px",
-            }}
-          >
+          <List header="">
             <List.Item
               prefix={<UserOutline />}
               extra={dataHoSo.nguoiDungTenHoSo}
@@ -110,7 +98,7 @@ const TraCuuHoSoChiTietPageContent = () => {
   );
 };
 
-export const TraCuuHoSoPage: FC = () => {
+export const TraCuuHoSoChiTietPage: FC = () => {
   return (
     <Page hideScrollbar={true}>
       <Header
@@ -119,7 +107,7 @@ export const TraCuuHoSoPage: FC = () => {
           background: mainColor,
           color: "#fff",
         }}
-        title="Tra Cứu Hồ Sơ"
+        title="Tra Cứu Hồ Sơ Chi Tiết"
       />
       <Suspense>
         <TraCuuHoSoChiTietPageContent />

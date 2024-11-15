@@ -82,7 +82,7 @@ const ChiTietLichSuHoiDapPageContent: FC = () => {
     const response = await (
       await getdata(
         "GET",
-        "https://vms-ai.thanhhoa.gov.vn/HoiDapTrucTuyenServices.asmx/ChiTietCauHoi?id=" +
+        "https://hoidap.tayninh.gov.vn/HoiDapTrucTuyenServices.asmx/ChiTietCauHoi?id=" +
           id
       )
     )
@@ -103,7 +103,7 @@ const ChiTietLichSuHoiDapPageContent: FC = () => {
     const response = await (
       await getdata(
         "GET",
-        "https://vms-ai.thanhhoa.gov.vn/HoiDapTrucTuyenServices.asmx/ChiTietCauTraLoi?id=" +
+        "https://hoidap.tayninh.gov.vn/HoiDapTrucTuyenServices.asmx/ChiTietCauTraLoi?id=" +
           id
       )
     )
@@ -183,7 +183,7 @@ const ChiTietLichSuHoiDapPageContent: FC = () => {
                             file == ""
                               ? Toast.show(`Không có file đính kèm`)
                               : openUrlInWebview(
-                                  `https://vms-ai.thanhhoa.gov.vn${file}`
+                                  `https://hoidap.tayninh.gov.vn${file}`
                                 );
                           }}
                           style={{ textAlign: "justify", color: "blue" }}
@@ -243,7 +243,7 @@ const ChiTietLichSuHoiDapPageContent: FC = () => {
                                 fileTL == ""
                                   ? Toast.show(`Không có file đính kèm`)
                                   : openUrlInWebview(
-                                      `https://vms-ai.thanhhoa.gov.vn${fileTL}`
+                                      `https://hoidap.tayninh.gov.vn${fileTL}`
                                     );
                               }}
                               style={{ textAlign: "justify", color: "blue" }}

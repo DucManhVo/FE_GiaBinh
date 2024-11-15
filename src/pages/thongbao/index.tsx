@@ -4,6 +4,7 @@ import { FC } from "react";
 import { Space, Image } from "antd-mobile";
 import axios from "axios";
 import { formatDate } from "utils/short-function";
+import icDeveloper from "../../static/developer.png";
 
 //Dùng API thì xoá dòng này
 import Response from "../../data/postData.json";
@@ -73,48 +74,66 @@ const ThongBaoPageContent = () => {
   }, []);
   //=======================================
   return (
-    <div>
-      {loading ? (
-        <LoadingContent />
-      ) : (
-        <List>
-          {items.map((item, index) => (
-            <List.Item key={index}>
-              <Space direction="vertical" align="start">
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <Icon
-                    style={{
-                      marginRight: "10px",
-                      color: mainColor,
-                      borderRadius: "50%",
-                    }}
-                    icon="zi-stranger"
-                  />
-                  &nbsp;
-                  <strong style={{ flex: 1, fontSize: 16 }}>
-                    {item.title}
-                  </strong>
-                </div>
-                {/* <div>{item.description}</div> */}
-                <div>
-                  <Icon style={{ color: mainColor }} size={18} icon="zi-user" />
-                  &nbsp;
-                  <em>{item.name}</em>
-                  &emsp;
-                  <Icon
-                    size={18}
-                    style={{ color: mainColor }}
-                    icon="zi-clock-1"
-                  />
-                  &nbsp;
-                  <em>Thời gian</em>
-                </div>
-              </Space>
-            </List.Item>
-          ))}
-        </List>
-      )}
-    </div>
+    <>
+      <Box
+        className="bg-white transition-all ease-out flex-none"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "70vh",
+          textAlign: "center",
+          flexDirection: "column",
+        }}
+      >
+        <div style={{ width: "200px", height: "200px" }}>
+          <img src={icDeveloper} alt="" />
+        </div>
+        <p>Chức năng đang được phát triển</p> <br></br>
+      </Box>
+    </>
+    // <div>
+    //   {loading ? (
+    //     <LoadingContent />
+    //   ) : (
+    //     <List>
+    //       {items.map((item, index) => (
+    //         <List.Item key={index}>
+    //           <Space direction="vertical" align="start">
+    //             <div style={{ display: "flex", alignItems: "center" }}>
+    //               <Icon
+    //                 style={{
+    //                   marginRight: "10px",
+    //                   color: mainColor,
+    //                   borderRadius: "50%",
+    //                 }}
+    //                 icon="zi-stranger"
+    //               />
+    //               &nbsp;
+    //               <strong style={{ flex: 1, fontSize: 16 }}>
+    //                 {item.title}
+    //               </strong>
+    //             </div>
+    //             {/* <div>{item.description}</div> */}
+    //             <div>
+    //               <Icon style={{ color: mainColor }} size={18} icon="zi-user" />
+    //               &nbsp;
+    //               <em>{item.name}</em>
+    //               &emsp;
+    //               <Icon
+    //                 size={18}
+    //                 style={{ color: mainColor }}
+    //                 icon="zi-clock-1"
+    //               />
+    //               &nbsp;
+    //               <em>Thời gian</em>
+    //             </div>
+    //           </Space>
+    //         </List.Item>
+    //       ))}
+    //     </List>
+    //   )}
+    // </div>
   );
 };
 

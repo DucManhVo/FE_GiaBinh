@@ -47,7 +47,15 @@ const TraCuuHoSoPageContent = () => {
         }}
         description="Vui lòng nhập thông tin như: Số điện thoại, số căn cước công dân hoặc số biên nhận để thực hiện thao tác tra cứu hồ sơ đã nộp"
       >
-        <SearchBar placeholder="Số biên nhận hoặc số điện thoại hoặc số CMND" />
+        &nbsp;
+        <SearchBar
+          style={{
+            boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.5)",
+          }}
+          placeholder="Số biên nhận hoặc số điện thoại hoặc số CMND"
+          onSearch={(value) => _traCuuThuTuc(value)}
+          onClear={() => setDataTimKiem(null)}
+        />
         {dataTimKiem && dataTimKiem.length > 0 ? (
           <List
             header={"Tìm thấy " + dataTimKiem.length + " kết quả"}
@@ -62,9 +70,12 @@ const TraCuuHoSoPageContent = () => {
                 title={item.nguoiDungTenHoSo}
                 description={item.tenThuTuc + " - " + item.ngayNhan}
                 onClick={() =>
-                  navigate("/dvc-tracuutinhtranghoso-chitiet/", {
-                    replace: true,
-                  })
+                  navigate(
+                    `/tracuuhoso/dvc-tracuutinhtranghoso-chitiet/?SoBienNhan=${item.soBienNhan}`,
+                    {
+                      replace: true,
+                    }
+                  )
                 }
               >
                 {item.soBienNhan}

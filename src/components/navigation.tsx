@@ -39,7 +39,7 @@ export const NO_BOTTOM_NAVIGATION_PAGES = [
   "/phananhtingia",
   "/nophoso",
   "/tracuuhoso",
-  "/chucnang6",
+  "/tracuuhoso/dvc-tracuutinhtranghoso-chitiet/",
   "/chucnang7",
 ];
 

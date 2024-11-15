@@ -30,15 +30,15 @@ const MainCategory: FC = () => {
       },
     });
   };
-  // const handleItemClick = (category: any) => {
-  //   if (category.id === "phananhtingia") {
-  //     setShowPopup(true);
-  //   } else if (category.url !== "") {
-  //     openUrlInWebview(category.url);
-  //   } else {
-  //     navigate(category.page);
-  //   }
-  // };
+  const handleItemClick = (category: any) => {
+    if (category.id === "nophoso") {
+      setShowPopup(true);
+    } else if (category.url !== "") {
+      openUrlInWebview(category.url);
+    } else {
+      navigate(category.page);
+    }
+  };
   return (
     <Box className="bg-white grid grid-cols-4 gap-4">
       <div
@@ -50,12 +50,12 @@ const MainCategory: FC = () => {
       {categories.map((categories, i) => (
         <div
           key={i}
-          //onClick={() => handleItemClick(categories)}
-          onClick={() =>
-            categories.url != ""
-              ? openUrlInWebview(categories.url)
-              : navigate(categories.page)
-          }
+          onClick={() => handleItemClick(categories)}
+          // onClick={() =>
+          //   categories.url != ""
+          //     ? openUrlInWebview(categories.url)
+          //     : navigate(categories.page)
+          // }
           className="flex flex-col space-y-2 items-center"
         >
           <img className="h-14" src={categories.icon} />

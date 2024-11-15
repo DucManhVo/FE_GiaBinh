@@ -18,6 +18,7 @@ import { ChiTietHoiDapPage } from "pages/hoidap/chitiethoidap";
 import { LichSuPage } from "pages/hoidap/lichsuhoidap";
 import { ChiTietLichSuHoiDapPage } from "pages/hoidap/chitietlichsuhoidap";
 import { TraCuuHoSoPage } from "pages/tracuuhoso";
+import { TraCuuHoSoChiTietPage } from "pages/tracuuhoso/dvc-tracuutinhtranghoso-chitiet";
 
 if (getSystemInfo().platform === "android") {
   const androidSafeTop = Math.round(
@@ -59,6 +60,10 @@ export const Layout: FC = () => {
             element={<ChiTietLichSuHoiDapPage />}
           ></Route>
           <Route path="/tracuuhoso" element={<TraCuuHoSoPage />}></Route>
+          <Route
+            path="/tracuuhoso/dvc-tracuutinhtranghoso-chitiet"
+            element={<TraCuuHoSoChiTietPage />}
+          ></Route>
         </AnimationRoutes>
       </Box>
       <Navigation />

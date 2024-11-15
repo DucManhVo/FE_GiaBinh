@@ -112,7 +112,6 @@ const TaoCuocHenPageContent: FC = () => {
   };
 
   const handleDateChange = (value) => {
-    //console.log(value);
     setSelectedDate(value.toISOString().split("T")[0]);
   };
 
@@ -165,8 +164,7 @@ const TaoCuocHenPageContent: FC = () => {
           phone: lichHen.phone,
           address: lichHen.address,
           description: lichHen.description,
-          date: selectedDate,
-          time: lichHen.time,
+          date: `${selectedDate}T${lichHen.time}`,
         }); // Ngăn chặn reload trang khi submit
 
         const requestOptions: any = {

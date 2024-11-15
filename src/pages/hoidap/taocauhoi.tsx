@@ -100,13 +100,13 @@ const TaoCauHoiPageContent: FC = () => {
           method: "POST",
           redirect: "follow" as RequestRedirect,
         };
-        const url = `https://ttbc.thanhhoa.gov.vn/api/CongDan/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
+        const url = `https://hoidap.tayninh.gov.vn/api/CongDan/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
         const response = await fetch(url, requestOptions);
         const result = await response.json();
         if (result.success) {
           setSdt(replace84(result.data.data.number));
 
-          const apiURL = `https://vms-ai.thanhhoa.gov.vn/api/CongDan/GetMiniAppUserInfo?UserID=${
+          const apiURL = `https://hoidap.tayninh.gov.vn/api/CongDan/GetMiniAppUserInfo?UserID=${
             userInfo.id
           }&Name=${userInfo.name}&Avatar=${
             userInfo.avatar
@@ -218,7 +218,7 @@ const TaoCauHoiPageContent: FC = () => {
       formdata.append("filedinhkem", file);
 
       fetch(
-        "https://vms-ai.thanhhoa.gov.vn/HoiDapTrucTuyenServices.asmx/DatCauHoi",
+        "https://hoidap.tayninh.gov.vn/HoiDapTrucTuyenServices.asmx/DatCauHoi",
         requestOptions
       )
         .then((response) => response.text())

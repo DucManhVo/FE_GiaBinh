@@ -76,7 +76,7 @@ const ChiTietHoiDapPageContent: FC = () => {
     const response = await (
       await getdata(
         "GET",
-        "https://vms-ai.thanhhoa.gov.vn/HoiDapTrucTuyenServices.asmx/ChiTietCauHoi?id=" +
+        "https://hoidap.tayninh.gov.vn/HoiDapTrucTuyenServices.asmx/ChiTietCauHoi?id=" +
           id
       )
     )
@@ -98,7 +98,7 @@ const ChiTietHoiDapPageContent: FC = () => {
     const response = await (
       await getdata(
         "GET",
-        "https://vms-ai.thanhhoa.gov.vn/HoiDapTrucTuyenServices.asmx/ChiTietCauTraLoi?id=" +
+        "https://hoidap.tayninh.gov.vn/HoiDapTrucTuyenServices.asmx/ChiTietCauTraLoi?id=" +
           id
       )
     )

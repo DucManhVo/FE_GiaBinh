@@ -3,7 +3,7 @@ import { getConfig } from "utils/config";
 import { FC } from "react";
 import { Space, Image, DotLoading } from "antd-mobile";
 import axios from "axios";
-import { getDate, getTime } from "utils/short-function";
+import { formatDate, getDate, getTime } from "utils/short-function";
 import icHistory from "../../static/history.png";
 
 //Dùng API thì xoá dòng này
@@ -50,12 +50,13 @@ const DatLichPageContent = () => {
       .then((response) => {
         // Assuming the API returns an array of objects with title, body (as description), and userId (as name)
         const data = response.data.data.map((item) => ({
-          date: getDate(item.date),
+          date: formatDate(getDate(item.date)),
           time: getTime(item.date),
           name: item.name,
           address: item.address,
           description: item.description,
           status: item.status,
+          lyDo: item.lyDo,
         }));
         setLichHen(data);
         setLoading(false);
@@ -139,9 +140,9 @@ const DatLichPageContent = () => {
                     />
                     &nbsp;
                     <em>
-                      {item.status == 1
+                      {item.status == 0
                         ? "Chấp thuận"
-                        : item.status == 2
+                        : item.status == 1
                         ? "Từ chối"
                         : "Đang xử lý"}
                     </em>
@@ -153,6 +154,20 @@ const DatLichPageContent = () => {
                     />
                     &nbsp;
                     <em>{item.address}</em>
+                    <em>
+                      {item["lyDo"] && (
+                        <p
+                          style={{
+                            color: "#FC5151",
+                            fontSize: "0.8rem",
+                            marginTop: "6px",
+                            textAlign: "justify",
+                          }}
+                        >
+                          Lý do huỷ: {item["lyDo"]}
+                        </p>
+                      )}
+                    </em>
                   </div>
                 </Space>
               </List.Item>
