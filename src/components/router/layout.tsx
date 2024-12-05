@@ -19,7 +19,9 @@ import { LichSuPage } from "pages/hoidap/lichsuhoidap";
 import { ChiTietLichSuHoiDapPage } from "pages/hoidap/chitietlichsuhoidap";
 import { TraCuuHoSoPage } from "pages/tracuuhoso";
 import { TraCuuHoSoChiTietPage } from "pages/tracuuhoso/dvc-tracuutinhtranghoso-chitiet";
-
+import { TraCuuThuTucPage } from "pages/nophoso";
+import { ChiTietThuTucPage } from "pages/nophoso/chitiethutuc";
+import { HoanTatPage } from "pages/nophoso/hoantat";
 if (getSystemInfo().platform === "android") {
   const androidSafeTop = Math.round(
     (window as any).ZaloJavaScriptInterface.getStatusBarHeight() /
@@ -64,6 +66,12 @@ export const Layout: FC = () => {
             path="/tracuuhoso/dvc-tracuutinhtranghoso-chitiet"
             element={<TraCuuHoSoChiTietPage />}
           ></Route>
+          <Route path="/nophoso" element={<TraCuuThuTucPage />}></Route>
+          <Route
+            path="/nophoso/chitietthutuc"
+            element={<ChiTietThuTucPage />}
+          ></Route>
+          <Route path="/nophoso/hoantat" element={<HoanTatPage />}></Route>
         </AnimationRoutes>
       </Box>
       <Navigation />

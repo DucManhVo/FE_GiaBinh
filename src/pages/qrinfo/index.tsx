@@ -2,6 +2,7 @@ import React, { Suspense, useCallback, useEffect, useState } from "react";
 import { FC } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { getConfig } from "utils/config";
+import { replace84 } from "../../utils/short-function";
 
 import {
   Avatar,
@@ -18,6 +19,13 @@ import {
 } from "zmp-ui";
 import { DotLoading, Toast } from "antd-mobile";
 import { QRCodeSVG } from "qrcode.react";
+
+import {
+  authorize,
+  getAccessToken,
+  getPhoneNumber,
+  getUserInfo,
+} from "zmp-sdk/apis";
 
 const { Item } = List;
 const mainColor = getConfig((c) => c.template.primaryColor);
@@ -42,11 +50,13 @@ const LoadingContent = () => {
 const QRinfoContent: FC = () => {
   const navigate = useNavigate();
   const { Item } = List;
-  const [cauHoi, setCauHoi] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [userID, setUserID] = useState("");
   const [userName, setUserName] = useState("");
   const [sdt, setSdt] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [accessToken, setAccessToken] = useState("");
+
   const [popupVisible, setPopupVisible] = useState(false);
 
   const Card = ({ icon, text, onClick }) => (
@@ -78,11 +88,54 @@ const QRinfoContent: FC = () => {
     setPopupVisible(false);
   };
 
+  const fetchData = useCallback(async (accessToken) => {
+    try {
+      const { userInfo } = await getUserInfo({ autoRequestPermission: true });
+      setUserID(userInfo.id);
+      setUserName(userInfo.name);
+      setAvatar(userInfo.avatar);
+
+      const data = await getPhoneNumber();
+      const token = data?.token;
+      if (token) {
+        const requestOptions = {
+          method: "POST",
+          redirect: "follow" as RequestRedirect,
+        };
+        console.log(token);
+        console.log(accessToken);
+        const url = `https://giabinhso.tayninh.gov.vn/api/UserInfoMiniApp/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
+        const response = await fetch(url, requestOptions);
+        const result = await response.json();
+        setSdt(replace84(result.data.data.number));
+      } else {
+        console.error("Token is undefined");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
+  useEffect(() => {
+    const fetchAcessToken = async () => {
+      try {
+        const accesstoken = await getAccessToken();
+
+        setAccessToken(accesstoken);
+        fetchData(accesstoken);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+    fetchAcessToken();
+  }, [fetchData]);
+
   return (
     <Page className="bg-white transition-all ease-out flex-none">
       <Box mt={4} style={{ textAlign: "center" }}>
         <Avatar story="default" src={avatar} />
-        {/* <p style={{ fontSize: "15px", marginTop: "4px" }}>{userName}</p> */}
+        <p style={{ fontSize: "15px", marginTop: "4px" }}>{userName}</p>
       </Box>
       <List>
         <Item
@@ -130,13 +183,21 @@ const QRinfoContent: FC = () => {
             marginTop: "20px",
           }}
         >
-          <Card icon="zi-inbox" text="Hồ sơ của tôi" onClick={showPopup} />
+          <Card
+            icon="zi-inbox"
+            text="Hồ sơ của tôi"
+            onClick={() => navigate("/tracuuhoso")}
+          />
           <Card
             icon="zi-help-circle"
             text="Câu hỏi của tôi"
-            onClick={showPopup}
+            onClick={() => navigate("/hoidap/lichsuhoidap")}
           />
-          <Card icon="zi-note" text="Biên lai điện tử" onClick={showPopup} />
+          <Card
+            icon="zi-note"
+            text="Lịch hẹn của tôi"
+            onClick={() => navigate("/datlich/")}
+          />
           <Card icon="zi-gallery" text="Kết quả điện tử" onClick={showPopup} />
         </Box>
       </Box>

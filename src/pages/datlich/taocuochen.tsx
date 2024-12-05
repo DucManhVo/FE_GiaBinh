@@ -28,6 +28,7 @@ import {
   getAccessToken,
   getPhoneNumber,
 } from "zmp-sdk/apis";
+
 import { divide, template } from "lodash";
 
 import { any, array } from "prop-types";
@@ -36,26 +37,10 @@ import { getConfig } from "utils/config";
 
 const mainColor = getConfig((c) => c.template.primaryColor);
 
-const LoadingContent = () => {
-  return (
-    <Box
-      mt={6}
-      flex
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <div style={{ color: mainColor }}>
-        <DotLoading color={mainColor} />
-        <span>Đang tải</span>
-      </div>
-    </Box>
-  );
-};
 const TaoCuocHenPageContent: FC = () => {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState<any>();
-  const [selectedTime, setSelectedTime] = useState<any>();
+  const [selectedTime, setSelectedTime] = useState<string>("");
   const [popupVisible, setPopupVisible] = useState(false);
   const [lichHen, setLichHen] = useState({
     name: "",
@@ -64,37 +49,85 @@ const TaoCuocHenPageContent: FC = () => {
     noidung: "",
     description: "",
     date: selectedDate,
-    time: "",
+    time: selectedTime,
   });
+  const [accessToken, setAccessToken] = useState("");
+  const [userID, setUserID] = useState("");
+  const [userName, setUserName] = useState("");
+  const [sdt, setSdt] = useState("");
+  const [avatar, setAvatar] = useState("");
 
-  interface Option {
-    value: number;
-    displayName: string;
-  }
+  const fetchData = useCallback(async (accessToken) => {
+    try {
+      const { userInfo } = await getUserInfo({ autoRequestPermission: true });
+      setUserID(userInfo.id);
+      setUserName(userInfo.name);
+      setAvatar(userInfo.avatar);
+      setLichHen({ ...lichHen, name: userInfo.name });
 
-  const genHour = (name, number, hour = "Giờ") => {
-    const data: Option[] = [];
-    // eslint-disable-next-line no-plusplus
-    for (let i = 7; i < number; i++) {
-      data.push({
-        value: i + 1,
-        displayName: `${i + 1} ${hour}`,
-      });
+      const data = await getPhoneNumber();
+      const token = data?.token;
+      if (token) {
+        const requestOptions = {
+          method: "POST",
+          redirect: "follow" as RequestRedirect,
+        };
+        const url = `https://giabinhso.tayninh.gov.vn/api/UserInfoMiniApp/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
+        const response = await fetch(url, requestOptions);
+        const result = await response.json();
+        if (result.success) {
+          setSdt(replace84(result.data.data.number));
+
+          // const apiURL = `https://hoidap.tayninh.gov.vn/api/CongDan/GetMiniAppUserInfo?UserID=${
+          //   userInfo.id
+          // }&Name=${userInfo.name}&Avatar=${
+          //   userInfo.avatar
+          // }&DienThoai=${replace84(result.data.data.number)}&OAID=${
+          //   userInfo.idByOA
+          // }`;
+          // // console.log(apiURL);
+          // const apiResponse = await fetch(apiURL, {
+          //   method: "POST",
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //   },
+          // });
+          // const apiResult = await apiResponse.json();
+          // console.log("API Result:", apiResult);
+        } else {
+          console.error("Failed to get phone number:", result.message);
+        }
+      } else {
+        console.error("Token is undefined");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-    return data;
+  }, []);
+
+  const _getDataSDT = async (dienThoai) => {
+    if (!dienThoai) return;
+    setLichHen({ ...lichHen, phone: dienThoai });
   };
 
-  const genMiniute = (name, number, miniute = "Phút") => {
-    const data: Option[] = [];
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < number; i++) {
-      data.push({
-        value: i + 1,
-        displayName: `${i + 1} ${miniute}`,
-      });
+  useEffect(() => {
+    if (sdt) {
+      _getDataSDT(sdt);
     }
-    return data;
-  };
+  }, [sdt]);
+
+  useEffect(() => {
+    const fetchAcessToken = async () => {
+      try {
+        const accesstoken = await getAccessToken();
+        setAccessToken(accesstoken);
+        fetchData(accesstoken);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAcessToken();
+  }, [fetchData]);
 
   const showPopup = () => {
     setPopupVisible(true);
@@ -107,7 +140,6 @@ const TaoCuocHenPageContent: FC = () => {
   const handleChange = (e) => {
     const newLichHen = { ...lichHen };
     newLichHen[e.target.id] = e.target.value;
-    //console.log(e.target.value);
     setLichHen(newLichHen);
   };
 
@@ -115,34 +147,44 @@ const TaoCuocHenPageContent: FC = () => {
     setSelectedDate(value.toISOString().split("T")[0]);
   };
 
-  const validateTime = (value) => {
-    // Xóa ký tự không phải là số và dấu hai chấm
-    let newValue = value.replace(/[^0-9:]/g, "");
+  // const handleTimeChange = (e) => {
+  //   setSelectedTime(e.target.value);
+  // };
 
-    // Đảm bảo chỉ nhập tối đa 5 ký tự
-    if (newValue.length > 5) {
-      newValue = newValue.slice(0, 5);
+  const handleTimeChange = (value: string | undefined): void => {
+    const safeValue = String(value || "");
+
+    // Remove all characters except digits and colons
+    let formattedValue = safeValue.replace(/[^0-9:]/g, "");
+
+    // Automatically insert a colon if length is 2 and no colon exists
+    if (formattedValue.length === 2 && !formattedValue.includes(":")) {
+      formattedValue += ":";
     }
 
-    // Tự động thêm dấu hai chấm khi nhập giờ/phút
-    if (newValue.length === 2 && !newValue.includes(":")) {
-      newValue = newValue + ":";
+    // Limit input to HH:MM format and ensure max length is 5
+    if (
+      !/^([0-1][0-9]|2[0-3]):[0-5][0-9]?$/.test(formattedValue) &&
+      formattedValue.length > 5
+    ) {
+      formattedValue = formattedValue.slice(0, 5);
     }
 
-    // Kiểm tra định dạng hh:mm hợp lệ
-    const timePattern = /^([01]\d|2[0-3]):[0-5]\d$/;
-    if (!timePattern.test(newValue) && newValue.length === 5) {
-      Toast.show("Thời gian không hợp lệ.");
-      newValue = "";
-    }
-
-    return newValue;
+    setSelectedTime(formattedValue);
   };
 
-  const handleTimeChange = (e) => {
-    const validatedValue = validateTime(e.target.value);
-    e.target.value = validatedValue; // Cập nhật lại giá trị đã được kiểm tra
-    selectedTime(validatedValue);
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
+    const inputValue = e.target.value.trim();
+    if (!/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/.test(inputValue)) {
+      Toast.show({
+        content: "Vui lòng nhập giờ theo định dạng 00:00",
+        duration: 2000,
+      });
+
+      setSelectedTime("");
+    } else {
+      setSelectedTime(inputValue);
+    }
   };
 
   const myHeaders = new Headers();
@@ -156,15 +198,15 @@ const TaoCuocHenPageContent: FC = () => {
         lichHen.phone,
         lichHen.address,
         lichHen.description,
-        lichHen.date,
-        lichHen.time) != ""
+        selectedDate,
+        selectedTime) != ""
       ) {
         const raw = JSON.stringify({
           name: lichHen.name,
           phone: lichHen.phone,
           address: lichHen.address,
           description: lichHen.description,
-          date: `${selectedDate}T${lichHen.time}`,
+          date: `${selectedDate}T${selectedTime}`,
         }); // Ngăn chặn reload trang khi submit
 
         const requestOptions: any = {
@@ -175,7 +217,7 @@ const TaoCuocHenPageContent: FC = () => {
         };
 
         fetch(
-          "https://localhost:44337/api/Nukeviet/InsertLichHen",
+          "https://giabinhso.tayninh.gov.vn/api/Nukeviet/InsertLichHen",
           requestOptions
         )
           .then((response) => response.text())
@@ -184,7 +226,7 @@ const TaoCuocHenPageContent: FC = () => {
 
         showPopup();
       } else {
-        Toast.show("Vui lòng nhập đủ thông tin");
+        Toast.show("Vui lòng nhập đủ và đúng định dạng thông tin");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -198,6 +240,7 @@ const TaoCuocHenPageContent: FC = () => {
       <form className="relative flex-1 flex flex-col" onSubmit={handleSubmit}>
         <Input
           id="name"
+          value={lichHen.name}
           style={{ marginLeft: "16px", marginRight: "16px" }}
           label="Họ tên"
           onChange={handleChange}
@@ -206,6 +249,7 @@ const TaoCuocHenPageContent: FC = () => {
         ></Input>
         <Input
           id="phone"
+          value={lichHen.phone}
           style={{ marginLeft: "16px", marginRight: "16px" }}
           label="Số điện thoại"
           onChange={handleChange}
@@ -243,39 +287,18 @@ const TaoCuocHenPageContent: FC = () => {
             }}
           />
         </Box>
-        {/* <Box style={{ marginLeft: "16px", marginRight: "16px" }}>
-          <Picker
-            label="Thời gian hẹn"
-            placeholder="Nhập thời gian"
-            mask
-            maskClosable
-            title="Nhập thời gian"
-            action={{
-              text: "Xong",
-              close: true,
-            }}
-            // disabled
-            data={[
-              {
-                options: genHour("key1", 17),
-                name: "otp1",
-              },
-              {
-                options: genMiniute("key2", 60),
-                name: "otp2",
-              },
-            ]}
-          />
-        </Box> */}
         <Input
           id="time"
           style={{ marginLeft: "16px", marginRight: "16px" }}
-          label="Thời gian"
           suffix={<Icon icon="zi-clock-2" style={{ marginRight: "11px" }} />}
-          onChange={handleChange}
+          label="Thời gian"
+          value={selectedTime}
+          placeholder="Nhập theo định dạng Giờ:Phút"
+          onChange={(e) => handleTimeChange(e.target.value)}
           className="zaui-list-item-subtitle"
-          placeholder="Nhập theo cú pháp Giờ:Phút"
-        ></Input>
+          onBlur={handleBlur}
+          clearable
+        />
         <Button
           htmlType="submit"
           style={{

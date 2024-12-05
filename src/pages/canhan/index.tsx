@@ -20,7 +20,8 @@ import {
   getAccessToken,
   getPhoneNumber,
   getUserInfo,
-} from "zmp-sdk";
+  getSetting,
+} from "zmp-sdk/apis";
 
 import { getConfig } from "utils/config";
 
@@ -55,58 +56,140 @@ const UserPageContent = () => {
 
   const fetchData = useCallback(async (accessToken) => {
     try {
-      const { userInfo } = await getUserInfo({});
+      //Lấy tên và avatar
+      const { userInfo } = await getUserInfo({
+        autoRequestPermission: true,
+      });
       setUserID(userInfo.id);
       setUserName(userInfo.name);
       setAvatar(userInfo.avatar);
-
+      //Lấy số điện thoại
+      // const authStatus = await getSetting({});
+      // const hasPhonePermission =
+      //   authStatus.authSetting["scope.userPhonenumber"];
       const data = await getPhoneNumber();
       const token = data?.token;
+      console.log("tokten " + token);
       if (token) {
         const requestOptions = {
           method: "POST",
           redirect: "follow" as RequestRedirect,
         };
-        const url = `https://testsoft.tayninh.gov.vn/api/CongDan/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
+        const url = `https://giabinhso.tayninh.gov.vn/api/UserInfoMiniApp/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
         const response = await fetch(url, requestOptions);
         const result = await response.json();
+        console.log("kq " + result);
         if (result.success) {
           setSdt(replace84(result.data.data.number));
-          const apiURL = `https://testsoft.tayninh.gov.vn/api/CongDan/GetMiniAppUserInfo?UserID=${
-            userInfo.id
-          }&Name=${userInfo.name}&Avatar=${
-            userInfo.avatar
-          }&DienThoai=${replace84(result.data.data.number)}&OAID=${
-            userInfo.idByOA
-          }`;
-          // console.log(apiURL);
-          const apiResponse = await fetch(apiURL, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          const apiResult = await apiResponse.json();
-          console.log("API Result:", apiResult);
         } else {
           console.error("Failed to get phone number:", result.message);
         }
       } else {
         console.error("Token is undefined");
       }
+      // if (!hasPhonePermission) {
+      //   const getPhonePermission = await authorize({
+      //     scopes: ["scope.userPhonenumber"],
+      //   });
+      //   const data = await getPhoneNumber();
+      //   const token = data?.token;
+      //   if (token) {
+      //     const requestOptions = {
+      //       method: "POST",
+      //       redirect: "follow" as RequestRedirect,
+      //     };
+      //     const url = `https://giabinhso.tayninh.gov.vn/api/UserInfoMiniApp/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
+      //     const response = await fetch(url, requestOptions);
+      //     const result = await response.json();
+      //     if (result.success) {
+      //       setSdt(replace84(result.data.data.number));
+      //     } else {
+      //       console.error("Failed to get phone number:", result.message);
+      //     }
+      //   } else {
+      //     console.error("Token is undefined");
+      //   }
+      // }
+      //===================================================================
+      // getSetting({
+      //   success: async (authStatus) => {
+      //     const hasPhonePermission =
+      //       authStatus.authSetting["scope.userPhonenumber"];
+      //     if (!hasPhonePermission) {
+      //       authorize({
+      //         scopes: ["scope.userPhonenumber"],
+      //         success: async () => {
+      //           // Handle successful API call
+      //           console.log("PhonePermission successful:");
+      //           const data = await getPhoneNumber();
+      //           const token = data?.token;
+      //           if (token) {
+      //             const requestOptions = {
+      //               method: "POST",
+      //               redirect: "follow" as RequestRedirect,
+      //             };
+      //             const url = `https://giabinhso.tayninh.gov.vn/api/UserInfoMiniApp/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
+      //             const response = await fetch(url, requestOptions);
+      //             const result = await response.json();
+      //             if (result.success) {
+      //               setSdt(replace84(result.data.data.number));
+      //             } else {
+      //               console.error(
+      //                 "Failed to get phone number:",
+      //                 result.message
+      //               );
+      //             }
+      //           } else {
+      //             console.error("Token is undefined");
+      //           }
+      //         },
+      //         fail: (error) => {
+      //           // Handle API call failure
+      //           console.error("PhonePermission failed:", error);
+      //         },
+      //       });
+      //     } else {
+      //       console.log("User already has phone permission.");
+      //       const data = await getPhoneNumber();
+      //       const token = data?.token;
+      //       if (token) {
+      //         const requestOptions = {
+      //           method: "POST",
+      //           redirect: "follow" as RequestRedirect,
+      //         };
+      //         const url = `https://giabinhso.tayninh.gov.vn/api/UserInfoMiniApp/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
+      //         const response = await fetch(url, requestOptions);
+      //         const result = await response.json();
+      //         if (result.success) {
+      //           setSdt(replace84(result.data.data.number));
+      //         } else {
+      //           console.error("Failed to get phone number:", result.message);
+      //         }
+      //       } else {
+      //         console.error("Token is undefined");
+      //       }
+      //     }
+      //   },
+      //   fail: (error) => {
+      //     // Handle failure of getSetting
+      //     console.error("Failed to fetch settings:", error);
+      //   },
+      // });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }, []);
+
   useEffect(() => {
     const fetchAcessToken = async () => {
       try {
-        const accesstoken = await getAccessToken();
+        const accesstoken = await getAccessToken({});
+        console.log("access token " + accesstoken);
         setAccessToken(accesstoken);
         fetchData(accesstoken);
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        //console.log(error);
         setLoading(false);
       }
     };

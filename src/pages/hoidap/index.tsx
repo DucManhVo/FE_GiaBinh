@@ -214,7 +214,7 @@ const HoiDapPageContent = () => {
               Đặt câu hỏi
             </span>
           </div>
-          {/* <div className="product-bottom-panel__button-action">
+          <div className="product-bottom-panel__button-action">
             <span
               onClick={() => {
                 navigate(`/hoidap/lichsuhoidap`);
@@ -224,7 +224,7 @@ const HoiDapPageContent = () => {
               <Icon style={{ fontWeight: 550 }} size={17} icon="zi-memory" />
               Lịch sử
             </span>
-          </div> */}
+          </div>
         </div>
       </div>
     </Box>

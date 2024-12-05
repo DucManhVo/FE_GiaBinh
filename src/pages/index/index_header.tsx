@@ -22,7 +22,7 @@ const IndexHeader: FC = () => {
             <Box>
               <Text.Title size="small">{mainTitleApp}</Text.Title>
               <Text size="xxSmall" color="#fff">
-                Mô tả cho ứng dụng bất kỳ ....
+                Chung tay cải cách hành chính
               </Text>
             </Box>
           </Box>

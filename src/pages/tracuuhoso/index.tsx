@@ -1,6 +1,7 @@
 import React, { Suspense, FC, useRef, useState } from "react";
 import { getConfig } from "utils/config";
 import { ResultPage, SearchBar, List, ErrorBlock, Toast } from "antd-mobile";
+import { getRouteParams } from "zmp-sdk";
 
 import { Box, Button, Header, Icon, Page, Text, useNavigate } from "zmp-ui";
 const mainColor = getConfig((c) => c.template.primaryColor);

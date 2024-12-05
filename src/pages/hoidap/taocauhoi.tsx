@@ -86,7 +86,7 @@ const TaoCauHoiPageContent: FC = () => {
 
   const fetchData = useCallback(async (accessToken) => {
     try {
-      const { userInfo } = await getUserInfo({});
+      const { userInfo } = await getUserInfo({ autoRequestPermission: true });
       setUserID(userInfo.id);
       setUserName(userInfo.name);
       setAvatar(userInfo.avatar);
@@ -94,34 +94,32 @@ const TaoCauHoiPageContent: FC = () => {
 
       const data = await getPhoneNumber();
       const token = data?.token;
-      console.log(token);
       if (token) {
         const requestOptions = {
           method: "POST",
           redirect: "follow" as RequestRedirect,
         };
-        const url = `https://hoidap.tayninh.gov.vn/api/CongDan/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
+        const url = `https://giabinhso.tayninh.gov.vn/api/UserInfoMiniApp/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
         const response = await fetch(url, requestOptions);
         const result = await response.json();
         if (result.success) {
           setSdt(replace84(result.data.data.number));
-
-          const apiURL = `https://hoidap.tayninh.gov.vn/api/CongDan/GetMiniAppUserInfo?UserID=${
-            userInfo.id
-          }&Name=${userInfo.name}&Avatar=${
-            userInfo.avatar
-          }&DienThoai=${replace84(result.data.data.number)}&OAID=${
-            userInfo.idByOA
-          }`;
-          // console.log(apiURL);
-          const apiResponse = await fetch(apiURL, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          const apiResult = await apiResponse.json();
-          console.log("API Result:", apiResult);
+          // const apiURL = `https://giabinhso.tayninh.gov.vn/api/UserInfoMiniApp/GetMiniAppUserInfo?UserID=${
+          //   userInfo.id
+          // }&Name=${userInfo.name}&Avatar=${
+          //   userInfo.avatar
+          // }&DienThoai=${replace84(result.data.data.number)}&OAID=${
+          //   userInfo.idByOA
+          // }`;
+          // // console.log(apiURL);
+          // const apiResponse = await fetch(apiURL, {
+          //   method: "POST",
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //   },
+          // });
+          // const apiResult = await apiResponse.json();
+          // console.log("API Result:", apiResult);
         } else {
           console.error("Failed to get phone number:", result.message);
         }
@@ -294,9 +292,10 @@ const TaoCauHoiPageContent: FC = () => {
               label="Không công khai"
             />
           </Radio.Group>
+
           <br />
           <label className="custom-file-upload" onClick={handleChooseImage}>
-            <Icon icon="zi-add-photo" />
+            <Icon icon="zi-photo-solid" />
             Chụp hoặc tải ảnh đính kèm
           </label>
           <br />

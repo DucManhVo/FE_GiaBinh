@@ -101,6 +101,7 @@ const LichSuPageContent = () => {
         pageIndex
       );
       const data = await response.json();
+      // setCauHoi(data);
       if (data.length < pageRows) {
         setHasMore(false); // No more data to load
       }
@@ -120,11 +121,12 @@ const LichSuPageContent = () => {
           method: "POST",
           redirect: "follow" as RequestRedirect,
         };
-        const url = `https://hoidap.tayninh.gov.vn/api/CongDan/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
+        const url = `https://giabinhso.tayninh.gov.vn/api/UserInfoMiniApp/GetPhoneNumberByToken?accessToken=${accessToken}&token=${token}`;
         const response = await fetch(url, requestOptions);
         const result = await response.json();
         if (result.success) {
           const phoneNumber = replace84(result.data.data.number);
+          console.log(phoneNumber);
           setSdt(phoneNumber);
           _getData(phoneNumber);
         } else {
@@ -138,6 +140,7 @@ const LichSuPageContent = () => {
     }
   };
   const fetchMoreData = () => {
+    // console.log("kéooooooo:");
     if (!isLoading && hasMore) {
       setPageIndex((prevPageIndex) => prevPageIndex + 1);
     }

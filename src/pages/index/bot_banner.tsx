@@ -6,7 +6,7 @@ import axios from "axios";
 import { getConfig } from "utils/config";
 
 //Dùng API thì xoá dòng này
-import Response from "../../data/bannerData.json";
+import Response from "../../data/botBannerData.json";
 
 const mainColor = getConfig((c) => c.template.primaryColor);
 const openUrlInWebview = (url: string) => {
@@ -46,6 +46,7 @@ export const BotBannerContent: FC = () => {
 
   useEffect(() => {
     const data = Response.map((item) => ({
+      id: item.id,
       url: item.url,
       title: item.title,
       thumbnailUrl: item.thumbnailUrl,

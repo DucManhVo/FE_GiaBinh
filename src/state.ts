@@ -78,7 +78,7 @@ export const mainCategories = selector<any[]>({
       name: "Nộp hồ sơ",
       icon: icDoc,
       url: "",
-      page: "",
+      page: "/nophoso",
     },
     {
       id: "tracuuhoso",

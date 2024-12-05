@@ -37,10 +37,11 @@ export const NO_BOTTOM_NAVIGATION_PAGES = [
   "/hoidap/lichsuhoidap",
   "/hoidap/chitietlichsuhoidap/",
   "/phananhtingia",
-  "/nophoso",
   "/tracuuhoso",
   "/tracuuhoso/dvc-tracuutinhtranghoso-chitiet/",
-  "/chucnang7",
+  "/nophoso",
+  "/nophoso/chitietthutuc",
+  "/nophoso/hoantat",
 ];
 
 export const Navigation: FC = () => {

@@ -50,12 +50,12 @@ const MainCategory: FC = () => {
       {categories.map((categories, i) => (
         <div
           key={i}
-          onClick={() => handleItemClick(categories)}
-          // onClick={() =>
-          //   categories.url != ""
-          //     ? openUrlInWebview(categories.url)
-          //     : navigate(categories.page)
-          // }
+          //onClick={() => handleItemClick(categories)}
+          onClick={() =>
+            categories.url != ""
+              ? openUrlInWebview(categories.url)
+              : navigate(categories.page)
+          }
           className="flex flex-col space-y-2 items-center"
         >
           <img className="h-14" src={categories.icon} />

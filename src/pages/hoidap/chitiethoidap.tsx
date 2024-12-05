@@ -13,6 +13,7 @@ import { openWebview } from "zmp-sdk/apis";
 import { getRouteParams } from "zmp-sdk";
 import { ListRenderer } from "components/list-renderer";
 import parse from "html-react-parser";
+import RatingComponent from "components/rating";
 import {
   formatDate,
   formatTimeStamp,
@@ -70,6 +71,8 @@ const ChiTietHoiDapPageContent: FC = () => {
   const [fileTL, setFileTL] = useState("");
   const [fileCH, setFileCH] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [rateValue, setRateValue] = useState(0);
+  const [rated, setRated] = useState(false);
   const { id } = getRouteParams();
   const getDataCauHoi = async () => {
     setIsLoading(true);
@@ -252,7 +255,9 @@ const ChiTietHoiDapPageContent: FC = () => {
                                 justifyContent: "space-around", // Center horizontally
                                 alignItems: "center",
                               }}
-                            ></div>
+                            >
+                              <RatingComponent />
+                            </div>
                           </Text.Header>
                         </Box>
                       ))}
