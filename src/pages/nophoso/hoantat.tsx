@@ -355,6 +355,7 @@ const HoanTatPageContent = () => {
       .then((res) => res.json())
       .then((data) => {
         setDonViThucHienCon([data.data]);
+        console.log([data.data]);
         toastHandler.current?.close();
       });
   };
@@ -382,6 +383,7 @@ const HoanTatPageContent = () => {
       .then((res) => res.json())
       .then((data) => {
         setMucDo(data.data[0].mucDo);
+        console.log(data.data);
         toastHandler.current?.close();
       });
   };
@@ -638,6 +640,7 @@ const HoanTatPageContent = () => {
             >
               <Picker
                 getContainer={null}
+                defaultValue={[]}
                 key="donViThucHienCon"
                 columns={donViThucHienCon}
                 cancelText="Hủy"

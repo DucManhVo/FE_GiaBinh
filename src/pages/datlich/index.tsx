@@ -193,6 +193,8 @@ const DatLichPageContent = () => {
                       ? "Chấp thuận"
                       : item.status == 1
                       ? "Từ chối"
+                      : item.status == 2
+                      ? "Đã đổi lịch"
                       : "Đang xử lý"}
                   </em>
                   &emsp;
@@ -213,7 +215,7 @@ const DatLichPageContent = () => {
                           textAlign: "justify",
                         }}
                       >
-                        Lý do huỷ: {item["lyDo"]}
+                        Lý do: {item["lyDo"]}
                       </p>
                     )}
                   </em>

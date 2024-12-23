@@ -61,7 +61,7 @@ export const mainCategories = selector<any[]>({
   get: () => [
     {
       id: "datlich",
-      name: "Chức năng đặt lịch",
+      name: "Đặt lịch hẹn",
       icon: icBooking,
       url: "",
       page: "/datlich",

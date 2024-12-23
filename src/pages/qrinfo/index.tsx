@@ -29,6 +29,7 @@ import {
 
 const { Item } = List;
 const mainColor = getConfig((c) => c.template.primaryColor);
+
 const LoadingContent = () => {
   return (
     <Box
